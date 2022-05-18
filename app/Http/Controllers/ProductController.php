@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
+
 
 class ProductController extends Controller
 {
@@ -16,6 +19,7 @@ class ProductController extends Controller
     'code' => 400,
   ];
 
+  public $imegenArray = [];
   public function rules()
   {
     $rules = [
@@ -24,32 +28,71 @@ class ProductController extends Controller
       'price' => 'required|numeric',
       'stopMin' => 'required|numeric',
       'stopMax' => 'required|numeric',
-      'image' => 'required',
+      'image' => array('required'),
     ];
     return $rules;
   }
 
-  public function show(Request $reques, $id)
+  public function show($imgen)
   {
-    dd($id);
+    $path = storage_path('app/public/image/'.$imgen);
+    log::info($path);
+    $file = Storage::get($path);
+    return $file;
+
+
   }
 
-  public function index(Request $reques, $id)
+  public function index()
   {
-    dd($id);
+    $products = Product::all();
+    foreach ($products as $key => $product) {
+      $imgen =  json_decode($product->image);
+      $product['image'] = $imgen;
+    }
+    $code = 200;
+    $status = 'success';
+    $this->data['status'] = $status;
+    $this->data['data'] = $products;
+    $this->data['code'] = $code;
+    return $this->data;
   }
   public function store(Request $request)
   {
     try {
+
       $validated = $request->validate($this->rules());
       $products = DB::transaction(function () use ($request) {
+        foreach ($request->image as $file) {
+          $file = $file;
+          //la extension de los archivos
+          $png = strstr($file, 'data:image/png;base64');
+          $jpg = strstr($file, 'data:image/jpg;base64');
+          $jpeg = strstr($file, 'data:image/jpeg;base64');
+          if ($png != null) {
+            $file = str_replace("data:image/png;base64,", "", $file);
+            $file = base64_decode($file);
+            $extension = ".png";
+          } elseif ($jpeg != null) {
+            $file = str_replace("data:image/jpeg;base64,", "", $file);
+            $file = base64_decode($file);
+            $extension = ".jpeg";
+          } elseif ($jpg != null) {
+            $file = str_replace("data:image/jpg;base64,", "", $file);
+            $file = base64_decode($file);
+            $extension = ".jpg";
+          }
+          $nameFile = uniqid() . $extension;
+          file_put_contents(storage_path('app/image/') . $nameFile, $file);
+          $this->imegenArray[] = $nameFile;
+        }
         $products = Product::create([
           'name' => $request->name,
           'description' => $request->description,
           'price' => $request->price,
           'stopMin' => $request->stopMin,
           'stopMax' => $request->stopMax,
-          'image' => json_encode($request->image)
+          'image' => json_encode($this->imegenArray)
         ]);
         $code = 200;
         $status = 'success';

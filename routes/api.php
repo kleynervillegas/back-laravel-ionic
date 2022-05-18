@@ -15,4 +15,6 @@ use App\Http\Controllers\ProductController;
 |
 */
 Route::resource('/products', \App\Http\Controllers\ProductController::class);
+// Route::get('/products/{imgen}', [\App\Http\Controllers\ProductController::class, 'getImegnPulication']);
+
 

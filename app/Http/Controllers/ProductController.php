@@ -9,38 +9,58 @@ use DB;
 
 class ProductController extends Controller
 {
-  public function __invoke()
+  //body of request response 
+  public $data = [
+    'status' => 'Error',
+    'data' => array(),
+    'code' => 400,
+  ];
+
+  public function rules()
   {
-    dd("Dff");
+    $rules = [
+      'name' => 'required|max:100',
+      'description' => 'required|max:500',
+      'price' => 'required|numeric',
+      'stopMin' => 'required|numeric',
+      'stopMax' => 'required|numeric',
+      'image' => 'required',
+    ];
+    return $rules;
   }
 
   public function show(Request $reques, $id)
   {
-    return response()->json(Product::all());
+    dd($id);
   }
 
-  public function index(Request $reques)
+  public function index(Request $reques, $id)
   {
-    return response()->json(Product::all());
+    dd($id);
   }
   public function store(Request $request)
   {
-    $status=500;
-    $data= ['',$status];
-    $data = DB::transaction(function () use ($request) {
-      $products = Product::create([
-        'name' => $request->name,
-        'description' => $request->description,
-        'price' => $request->price,
-        'stopMin' => $request->stopMin,
-        'stopMax' => $request->stopMax,
-        'image' => json_encode($request->image),
-
-      ]);
-      $status=200;
-      return $data =[$products,$status];
-    });
-    return response()->json($data[0], $data[1]); 
-
+    try {
+      $validated = $request->validate($this->rules());
+      $products = DB::transaction(function () use ($request) {
+        $products = Product::create([
+          'name' => $request->name,
+          'description' => $request->description,
+          'price' => $request->price,
+          'stopMin' => $request->stopMin,
+          'stopMax' => $request->stopMax,
+          'image' => json_encode($request->image)
+        ]);
+        $code = 200;
+        $status = 'success';
+        $this->data['status'] = $status;
+        $this->data['data'] = $products;
+        $this->data['code'] = $code;
+        return $this->data;
+      });
+      return response()->json($this->data);
+    } catch (\Exception $exception) {
+      return $this->data;
+    }
   }
 }

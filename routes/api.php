@@ -15,6 +15,6 @@ use App\Http\Controllers\ProductController;
 |
 */
 Route::resource('/products', \App\Http\Controllers\ProductController::class);
-// Route::get('/products/{imgen}', [\App\Http\Controllers\ProductController::class, 'getImegnPulication']);
+Route::get('/products/detailsproduct/{id}', [\App\Http\Controllers\ProductController::class, 'getDetailsProduct']);
 
 

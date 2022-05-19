@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use DB;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
+use Illuminate\Http\Response;
+
 
 
 class ProductController extends Controller
@@ -35,12 +38,8 @@ class ProductController extends Controller
 
   public function show($imgen)
   {
-    $path = storage_path('app/public/image/'.$imgen);
-    log::info($path);
-    $file = Storage::get($path);
+    $file = Storage::disk('image')->get($imgen);
     return $file;
-
-
   }
 
   public function index()
@@ -105,5 +104,18 @@ class ProductController extends Controller
     } catch (\Exception $exception) {
       return $this->data;
     }
+  }
+
+  public function getDetailsProduct($id)
+  {
+    $product = Product::where('id', $id)->first();
+    $imgen =  json_decode($product->image);
+    $product['image'] = $imgen;
+    $code = 200;
+    $status = 'success';
+    $this->data['status'] = $status;
+    $this->data['data'] = $product;
+    $this->data['code'] = $code;
+    return $this->data;
   }
 }

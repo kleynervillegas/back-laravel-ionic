@@ -28,6 +28,7 @@ class ProductController extends Controller
     $rules = [
       'name' => 'required|max:100',
       'description' => 'required|max:500',
+      'coin' => 'required|max:1',
       'price' => 'required|numeric',
       'stopMin' => 'required|numeric',
       'stopMax' => 'required|numeric',
@@ -59,7 +60,6 @@ class ProductController extends Controller
   public function store(Request $request)
   {
     try {
-
       $validated = $request->validate($this->rules());
       $products = DB::transaction(function () use ($request) {
         foreach ($request->image as $file) {
@@ -88,6 +88,7 @@ class ProductController extends Controller
         $products = Product::create([
           'name' => $request->name,
           'description' => $request->description,
+          'coin' => $request->coin,
           'price' => $request->price,
           'stopMin' => $request->stopMin,
           'stopMax' => $request->stopMax,

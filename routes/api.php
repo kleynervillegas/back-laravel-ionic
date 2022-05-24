@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +17,7 @@ use App\Http\Controllers\ProductController;
 */
 Route::resource('/products', \App\Http\Controllers\ProductController::class);
 Route::get('/products/detailsproduct/{id}', [\App\Http\Controllers\ProductController::class, 'getDetailsProduct']);
+Route::resource('/authentication', \App\Http\Controllers\LoginController::class);
+Route::post('/authentication/validate_user', [\App\Http\Controllers\LoginController::class, 'validateUser']);
 
 

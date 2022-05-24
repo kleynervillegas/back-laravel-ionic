@@ -20,6 +20,7 @@ class ProductController extends Controller
     'status' => 'Error',
     'data' => array(),
     'code' => 400,
+    'message' => 'A ocurrido un Error',
   ];
 
   public $imegenArray = [];
@@ -55,6 +56,7 @@ class ProductController extends Controller
     $this->data['status'] = $status;
     $this->data['data'] = $products;
     $this->data['code'] = $code;
+    $this->data['message'] = "Productos encontrados correctamente";
     return $this->data;
   }
   public function store(Request $request)
@@ -99,6 +101,8 @@ class ProductController extends Controller
         $this->data['status'] = $status;
         $this->data['data'] = $products;
         $this->data['code'] = $code;
+        $this->data['message'] = "Producto Registrado Satisfactoriamente";
+
         return $this->data;
       });
       return response()->json($this->data);
@@ -117,6 +121,7 @@ class ProductController extends Controller
     $this->data['status'] = $status;
     $this->data['data'] = $product;
     $this->data['code'] = $code;
+    $this->data['message'] = "Producto encontrado correctamente";
     return $this->data;
   }
 }

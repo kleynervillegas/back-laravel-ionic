@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Log;
+use DB;
 use App\Models\User;
+
 
 class LoginController extends Controller
 {
@@ -20,24 +23,83 @@ class LoginController extends Controller
         'message' => 'A ocurrido un Error',
     ];
 
-    public function validateUser(Request $request)
+    public function __construct()
+    {
+        // $this->middleware('auth:api', ['except' => ['login','authentication.store']]);
+    }
+
+    public function rules()
+    {
+
+        $rules = [
+            'FullName' => 'required',
+            'LastNames' => 'required',
+            'NumberId' => 'required',
+            'password' => 'required',
+            'Email' => 'required',
+            'User' => 'required',
+            'typeUser' => 'required',
+        ];
+        return $rules;
+    }
+
+    public function login(Request $request)
+    {
+        Log::info($request);
+        $credentials = request(['email', 'password']);
+
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithToken($token);
+
+        // try {
+        //     $user = User::where('Email', $request->email)->first();
+        //     if ($user != null) {
+        //         if (decrypt($user->Password) === $request->password && $user->Email === $request->email) {
+        //             $status = 'success';
+        //             $code = 200;
+        //             $this->data['status'] = $status;
+        //             $this->data['code'] = $code;
+        //             $this->data['message'] = "Autenticacion Correcta";
+        //             return $this->data;
+        //         } else {
+        //             $this->data['message'] = "Autenticacion Incorrecta";
+        //             return $this->data;
+        //         }
+        //     }
+        //     return $this->data;
+        // } catch (\Throwable $th) {
+        //     return $this->data;
+        // }
+    }
+    public function store(Request $request)
     {
         try {
-            $user = User::where('Email', $request->email)->first();
-            if ($user != null) {
-                if ($user->Password === $request->password && $user->Email === $request->email) {
-                    $status = 'success';
-                    $code = 200;
-                    $this->data['status'] = $status;
-                    $this->data['code'] = $code;
-                    $this->data['message'] = "Autenticacion Correcta";
-                    return $this->data;
-                } else {
-                    $this->data['message'] = "Autenticacion Incorrecta";
-                    return $this->data;
-                }
+            $validator = Validator::make($request->all(),$this->rules());
+            if ($validator->fails()){
+                return response()->json($validator->failed(), 400);
             }
-            return $this->data;
+            $user = DB::transaction(function () use ($request) {
+                $user = User::create([
+                    'FullName' => $request->FullName,
+                    'LastNames' => $request->LastNames,
+                    'NumberId' => $request->NumberId,
+                    'password' => encrypt($request->password),
+                    'Email' => $request->Email,
+                    'User' => $request->User,
+                    'typeUser' => $request->typeUser,
+                ]);
+                $code = 200;
+                $status = 'success';
+                $this->data['status'] = $status;
+                $this->data['data'] = $user;
+                $this->data['code'] = $code;
+                $this->data['message'] = "Usuario Registardo Satisfactoriomente";
+                return $this->data;
+            });
+            return response()->json($this->data);
         } catch (\Throwable $th) {
             return $this->data;
         }

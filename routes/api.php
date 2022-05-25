@@ -15,9 +15,25 @@ use App\Http\Controllers\LoginController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::resource('/products', \App\Http\Controllers\ProductController::class);
-Route::get('/products/detailsproduct/{id}', [\App\Http\Controllers\ProductController::class, 'getDetailsProduct']);
-Route::resource('/authentication', \App\Http\Controllers\LoginController::class);
-Route::post('/authentication/validate_user', [\App\Http\Controllers\LoginController::class, 'validateUser']);
 
 
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::resource('/products', \App\Http\Controllers\ProductController::class);
+    Route::get('/products/detailsproduct/{id}', [\App\Http\Controllers\ProductController::class, 'getDetailsProduct']);
+    Route::resource('/authentication', \App\Http\Controllers\LoginController::class);
+    Route::post('login', [\App\Http\Controllers\LoginController::class, 'login']);
+    Route::post('logout', [\App\Http\Controllers\LoginController::class, 'logout']);
+
+    // Route::post('login', 'Auth Controller@login');
+    // Route::post('logout', 'AuthController@logout');
+    // Route::post('refresh', 'AuthController@refresh');
+    // Route::post('me', 'AuthController@me');
+
+});

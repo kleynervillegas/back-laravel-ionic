@@ -34,13 +34,29 @@ class LoginController extends Controller
         $rules = [
             'FullName' => 'required',
             'LastNames' => 'required',
-            'NumberId' => 'required',
+            'NumberId' => 'required|unique:users',
             'password' => 'required',
-            'Email' => 'required',
+            'Email' => 'required|unique:users',
             'User' => 'required',
             'typeUser' => 'required',
         ];
+      
         return $rules;
+    }
+
+    public function messages(){
+        $messages =[
+            'FullName.required' => 'campo requerido',
+            'LastNames.required' => 'campo requerido ',
+            'NumberId.required' => 'campo requerido',
+            'NumberId.unique:users' => 'Cedula Repetida',
+            'password.required' => 'campo requerido ',
+            'Email.required' => 'campo requerido',
+            'Email.unique:users' => 'Email Repetida',
+            'User.required' => 'campo requerido ',
+            'typeUser.required' => 'campo requerido ',
+        ];
+        return $messages;
     }
 
     public function login(Request $request)
@@ -75,11 +91,11 @@ class LoginController extends Controller
         // }
     }
     public function store(Request $request)
-    {
+    {     
         try {
-            $validator = Validator::make($request->all(),$this->rules());
+            $validator = Validator::make($request->all(),$this->rules(),$this->messages());
             if ($validator->fails()){
-                return response()->json($validator->failed(), 400);
+                return response()->json($validator->messages(), 400);
             }
             $user = DB::transaction(function () use ($request) {
                 $user = User::create([

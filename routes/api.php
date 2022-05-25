@@ -27,13 +27,10 @@ Route::group([
 
     Route::resource('/products', \App\Http\Controllers\ProductController::class);
     Route::get('/products/detailsproduct/{id}', [\App\Http\Controllers\ProductController::class, 'getDetailsProduct']);
-    Route::resource('/authentication', \App\Http\Controllers\LoginController::class);
+    // Route::resource('/authentication', \App\Http\Controllers\LoginController::class);
     Route::post('login', [\App\Http\Controllers\LoginController::class, 'login']);
     Route::post('logout', [\App\Http\Controllers\LoginController::class, 'logout']);
-
-    // Route::post('login', 'Auth Controller@login');
-    // Route::post('logout', 'AuthController@logout');
-    // Route::post('refresh', 'AuthController@refresh');
-    // Route::post('me', 'AuthController@me');
-
+    Route::post('refresh', [\App\Http\Controllers\LoginController::class, 'refresh']);
+    Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);
+    Route::post('registre', [\App\Http\Controllers\LoginController::class, 'registre']);
 });

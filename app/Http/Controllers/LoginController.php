@@ -25,7 +25,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('auth:api', ['except' => ['login','authentication.store']]);
+        $this->middleware('auth:api', ['except' => ['login','registre']]);
     }
 
     public function rules()
@@ -61,7 +61,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        Log::info($request);
+        Log::info( Request()->header() );
         $credentials = request(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
@@ -69,6 +69,15 @@ class LoginController extends Controller
         }
 
         return $this->respondWithToken($token);
+        // $credentials = $request->only('email', 'password');
+        // try {
+        //     if (! $token = JWTAuth::attempt($credentials)) {
+        //         return response()->json(['error' => 'invalid_credentials'], 400);
+        //     }
+        // } catch (JWTException $e) {
+        //     return response()->json(['error' => 'could_not_create_token'], 500);
+        // }
+        // return response()->json(compact('token'));
 
         // try {
         //     $user = User::where('Email', $request->email)->first();
@@ -90,7 +99,14 @@ class LoginController extends Controller
         //     return $this->data;
         // }
     }
-    public function store(Request $request)
+
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    public function registre(Request $request)
     {     
         try {
             $validator = Validator::make($request->all(),$this->rules(),$this->messages());
@@ -107,11 +123,15 @@ class LoginController extends Controller
                     'User' => $request->User,
                     'typeUser' => $request->typeUser,
                 ]);
+
+                $token = JWTAuth::fromUser($user);
+
                 $code = 200;
                 $status = 'success';
                 $this->data['status'] = $status;
                 $this->data['data'] = $user;
                 $this->data['code'] = $code;
+                $this->data['token'] = $token;
                 $this->data['message'] = "Usuario Registardo Satisfactoriomente";
                 return $this->data;
             });
@@ -119,5 +139,20 @@ class LoginController extends Controller
         } catch (\Throwable $th) {
             return $this->data;
         }
+    }
+       /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
     }
 }

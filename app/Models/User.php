@@ -57,7 +57,6 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTIdentifier()
     {
-        log::info( "model".$this->getKey());
         return $this->getKey();
     }
 

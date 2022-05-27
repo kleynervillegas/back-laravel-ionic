@@ -26,7 +26,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('jwt.verify', ['except' => ['login','registre']]);
+        $this->middleware('jwt.verify', ['except' => ['login', 'registre']]);
     }
 
     public function rules()
@@ -41,12 +41,13 @@ class LoginController extends Controller
             'User' => 'required',
             'typeUser' => 'required',
         ];
-      
+
         return $rules;
     }
 
-    public function messages(){
-        $messages =[
+    public function messages()
+    {
+        $messages = [
             'FullName.required' => 'campo requerido',
             'LastNames.required' => 'campo requerido ',
             'NumberId.required' => 'campo requerido',
@@ -62,45 +63,29 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        // Log::info($request->header());
-        // $credentials = request(['email', 'password']);
-
-        // if (!$token = auth()->attempt($credentials)) {
-        //     return response()->json(['error' => 'Unauthorized'], 401);
-        // }
-
-        // return $this->respondWithToken($token);
-        $credentials = $request->only('email', 'password');
-        Log::info($credentials);
         try {
-            if (! $token = JWTAuth::attempt($credentials)) {
-                Log::info("token ".$token );
-                return response()->json(['error' => 'invalid_credentials'], 400);
+            $user = User::where('email', $request->email)->first();
+            if ($user != null) {
+                if (decrypt($user->password)  === $request->password && $user->email === $request->email) {
+                    $token = JWTAuth::fromUser($user);
+                    $status = 'success';
+                    $code = 200;
+                    $this->data['status'] = $status;
+                    $this->data['code'] = $code;
+                    $this->data['token'] = $token;
+                    $this->data['token_type'] = "bearer";
+                    $this->data['expires_in'] = auth()->factory()->getTTL() * 60;
+                    $this->data['message'] = "Autenticacion Correcta";
+                    return $this->data;
+                } else {
+                    $this->data['message'] = "Autenticacion Incorrecta";
+                    return $this->data;
+                }
             }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            // return $this->data;
+        } catch (\Throwable $th) {
+            return $this->data;
         }
-        return response()->json(compact('token'));
-
-        // try {
-        //     $user = User::where('Email', $request->email)->first();
-        //     if ($user != null) {
-        //         if (decrypt($user->Password)  === $request->password && $user->Email === $request->email) {
-        //             $status = 'success';
-        //             $code = 200;
-        //             $this->data['status'] = $status;
-        //             $this->data['code'] = $code;
-        //             $this->data['message'] = "Autenticacion Correcta";
-        //             return $this->data;
-        //         } else {
-        //             $this->data['message'] = "Autenticacion Incorrecta";
-        //             return $this->data;
-        //         }
-        //     }
-        //     return $this->data;
-        // } catch (\Throwable $th) {
-        //     return $this->data;
-        // }
     }
 
     public function logout()
@@ -110,10 +95,10 @@ class LoginController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
     public function registre(Request $request)
-    {     
+    {
         try {
-            $validator = Validator::make($request->all(),$this->rules(),$this->messages());
-            if ($validator->fails()){
+            $validator = Validator::make($request->all(), $this->rules(), $this->messages());
+            if ($validator->fails()) {
                 return response()->json($validator->messages(), 400);
             }
             $user = DB::transaction(function () use ($request) {
@@ -127,14 +112,11 @@ class LoginController extends Controller
                     'typeUser' => $request->typeUser,
                 ]);
 
-                $token = JWTAuth::fromUser($user);               
-
                 $code = 200;
                 $status = 'success';
                 $this->data['status'] = $status;
                 $this->data['data'] = $user;
                 $this->data['code'] = $code;
-                $this->data['token'] = $token;
                 $this->data['message'] = "Usuario Registardo Satisfactoriomente";
                 return $this->data;
             });
@@ -143,19 +125,8 @@ class LoginController extends Controller
             return $this->data;
         }
     }
-       /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function respondWithToken($token)
+     public function me()
     {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        return response()->json(auth()->user());
     }
 }

@@ -16,10 +16,7 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-
-
 Route::group([
-
     'middleware' => 'jwt.verify',
     'prefix' => 'auth'
 
@@ -27,10 +24,9 @@ Route::group([
 
     Route::resource('/products', \App\Http\Controllers\ProductController::class);
     Route::get('/products/detailsproduct/{id}', [\App\Http\Controllers\ProductController::class, 'getDetailsProduct']);
-    // Route::resource('/authentication', \App\Http\Controllers\LoginController::class);
-    Route::post('login', [\App\Http\Controllers\LoginController::class, 'login']);
     Route::post('logout', [\App\Http\Controllers\LoginController::class, 'logout']);
     Route::post('refresh', [\App\Http\Controllers\LoginController::class, 'refresh']);
     Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);
 });
+Route::post('login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');
 Route::post('registre', [\App\Http\Controllers\LoginController::class, 'registre']);

@@ -20,7 +20,7 @@ use App\Http\Controllers\LoginController;
 
 Route::group([
 
-    'middleware' => 'api',
+    'middleware' => 'jwt.verify',
     'prefix' => 'auth'
 
 ], function ($router) {
@@ -32,5 +32,5 @@ Route::group([
     Route::post('logout', [\App\Http\Controllers\LoginController::class, 'logout']);
     Route::post('refresh', [\App\Http\Controllers\LoginController::class, 'refresh']);
     Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);
-    Route::post('registre', [\App\Http\Controllers\LoginController::class, 'registre']);
 });
+Route::post('registre', [\App\Http\Controllers\LoginController::class, 'registre']);

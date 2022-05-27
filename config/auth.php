@@ -12,10 +12,16 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-
     'defaults' => [
         'guard' => 'api',
         'passwords' => 'users',
+    ],   
+   
+    'guards' => [
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -37,7 +43,7 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver' => 'jwt',
             'provider' => 'users',
         ],
         'api' => [

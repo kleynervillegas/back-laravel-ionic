@@ -8,10 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Log;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +24,7 @@ class User extends Authenticatable implements JWTSubject
         'LastNames',
         'NumberId',
         'password',
-        'Email',
+        'email',
         'User',
         'typeUser',
     ];
@@ -56,6 +57,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTIdentifier()
     {
+        log::info( "model".$this->getKey());
         return $this->getKey();
     }
 

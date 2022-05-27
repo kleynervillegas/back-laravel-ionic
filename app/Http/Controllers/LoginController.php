@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+// use Tymon\JWTAuth\JWTAuth;
+use JWTAuth;
 use Log;
 use DB;
 use App\Models\User;
@@ -25,7 +26,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','registre']]);
+        // $this->middleware('jwt.verify', ['except' => ['login','registre']]);
     }
 
     public function rules()
@@ -36,7 +37,7 @@ class LoginController extends Controller
             'LastNames' => 'required',
             'NumberId' => 'required|unique:users',
             'password' => 'required',
-            'Email' => 'required|unique:users',
+            'email' => 'required|unique:users',
             'User' => 'required',
             'typeUser' => 'required',
         ];
@@ -51,8 +52,8 @@ class LoginController extends Controller
             'NumberId.required' => 'campo requerido',
             'NumberId.unique:users' => 'Cedula Repetida',
             'password.required' => 'campo requerido ',
-            'Email.required' => 'campo requerido',
-            'Email.unique:users' => 'Email Repetida',
+            'email.required' => 'campo requerido',
+            'email.unique:users' => 'Email Repetida',
             'User.required' => 'campo requerido ',
             'typeUser.required' => 'campo requerido ',
         ];
@@ -61,28 +62,30 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        Log::info( Request()->header() );
-        $credentials = request(['email', 'password']);
+        // Log::info($request->header());
+        // $credentials = request(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        return $this->respondWithToken($token);
-        // $credentials = $request->only('email', 'password');
-        // try {
-        //     if (! $token = JWTAuth::attempt($credentials)) {
-        //         return response()->json(['error' => 'invalid_credentials'], 400);
-        //     }
-        // } catch (JWTException $e) {
-        //     return response()->json(['error' => 'could_not_create_token'], 500);
+        // if (!$token = auth()->attempt($credentials)) {
+        //     return response()->json(['error' => 'Unauthorized'], 401);
         // }
-        // return response()->json(compact('token'));
+
+        // return $this->respondWithToken($token);
+        $credentials = $request->only('email', 'password');
+        Log::info($credentials);
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                Log::info("token ".$token );
+                return response()->json(['error' => 'invalid_credentials'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+        return response()->json(compact('token'));
 
         // try {
         //     $user = User::where('Email', $request->email)->first();
         //     if ($user != null) {
-        //         if (decrypt($user->Password) === $request->password && $user->Email === $request->email) {
+        //         if (decrypt($user->Password)  === $request->password && $user->Email === $request->email) {
         //             $status = 'success';
         //             $code = 200;
         //             $this->data['status'] = $status;
@@ -119,12 +122,12 @@ class LoginController extends Controller
                     'LastNames' => $request->LastNames,
                     'NumberId' => $request->NumberId,
                     'password' => encrypt($request->password),
-                    'Email' => $request->Email,
+                    'email' => $request->email,
                     'User' => $request->User,
                     'typeUser' => $request->typeUser,
                 ]);
 
-                $token = JWTAuth::fromUser($user);
+                $token = JWTAuth::fromUser($user);               
 
                 $code = 200;
                 $status = 'success';

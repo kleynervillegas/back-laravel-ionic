@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use JWTAuth;
 use Exception;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
+use Log;
 
 class JwtMiddleware extends BaseMiddleware
 {
@@ -19,6 +20,7 @@ class JwtMiddleware extends BaseMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
@@ -30,6 +32,7 @@ class JwtMiddleware extends BaseMiddleware
                 return response()->json(['status' => 'Authorization Token not found']);
             }
         }
+        
         return $next($request);
     }
 }

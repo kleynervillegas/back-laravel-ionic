@@ -26,7 +26,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        $this->middleware('jwt.verify', ['except' => ['login', 'registre']]);
+        // $this->middleware('jwt.verify', ['except' => ['login', 'registre']]);
     }
 
     public function rules()
@@ -73,8 +73,8 @@ class LoginController extends Controller
                     $this->data['status'] = $status;
                     $this->data['code'] = $code;
                     $this->data['token'] = $token;
-                    $this->data['token_type'] = "bearer";
-                    $this->data['expires_in'] = auth()->factory()->getTTL() * 60;
+                    $this->data['tokenType'] = "bearer";
+                    $this->data['expiresIn'] = auth()->factory()->getTTL() * 60;
                     $this->data['message'] = "Autenticacion Correcta";
                     return $this->data;
                 } else {

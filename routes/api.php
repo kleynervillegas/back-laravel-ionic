@@ -28,5 +28,6 @@ Route::group([
     Route::post('refresh', [\App\Http\Controllers\LoginController::class, 'refresh']);
     Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);
 });
+Route::get('get_image/{image}', [\App\Http\Controllers\ProductController::class, 'get_image'])->name('get_image');
 Route::post('login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');
 Route::post('registre', [\App\Http\Controllers\LoginController::class, 'registre']);

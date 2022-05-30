@@ -37,8 +37,15 @@ class ProductController extends Controller
     ];
     return $rules;
   }
+  public function __construct()
+  {  
+  }
+  public function show()
+  {
+    
+  }
 
-  public function show($imgen)
+  public function get_image($imgen)
   {
     $file = Storage::disk('image')->get($imgen);
     return $file;

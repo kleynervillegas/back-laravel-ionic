@@ -26,7 +26,7 @@ class LoginController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('jwt.verify', ['except' => ['login', 'registre']]);
+        $this->guard = "api"; // add
     }
 
     public function rules()
@@ -37,9 +37,11 @@ class LoginController extends Controller
             'LastNames' => 'required',
             'NumberId' => 'required|unique:users',
             'password' => 'required',
+            'confir' => 'required',
             'email' => 'required|unique:users',
             'User' => 'required',
             'typeUser' => 'required',
+            'typeNumberId' => 'required',
         ];
 
         return $rules;
@@ -55,17 +57,19 @@ class LoginController extends Controller
             'password.required' => 'campo requerido ',
             'email.required' => 'campo requerido',
             'email.unique:users' => 'Email Repetida',
-            'User.required' => 'campo requerido ',
             'typeUser.required' => 'campo requerido ',
+            'typeNumberId.required' => 'campo requerido ',
         ];
         return $messages;
     }
 
     public function login(Request $request)
     {
+        Log::info(gettype( json_decode($request)));
         try {
             $user = User::where('email', $request->email)->first();
             if ($user != null) {
+                // Log::info(auth( $this->guard )->login( $user ) );
                 if (decrypt($user->password)  === $request->password && $user->email === $request->email) {
                     $token = JWTAuth::fromUser($user);
                     $status = 'success';
@@ -96,6 +100,7 @@ class LoginController extends Controller
     }
     public function registre(Request $request)
     {
+        Log::info($request);
         try {
             $validator = Validator::make($request->all(), $this->rules(), $this->messages());
             if ($validator->fails()) {

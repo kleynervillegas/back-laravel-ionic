@@ -39,10 +39,12 @@ class ProductController extends Controller
   }
   public function __construct()
   {  
+    // $this->middleware('jwt.verify')->except('show');
   }
-  public function show()
+  public function show($imgen)
   {
-    
+    $file = Storage::disk('image')->get($imgen);
+    return $file;
   }
 
   public function get_image($imgen)

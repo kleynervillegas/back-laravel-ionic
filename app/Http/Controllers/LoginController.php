@@ -23,12 +23,7 @@ class LoginController extends Controller
         'code' => 400,
         'message' => 'A ocurrido un Error',
     ];
-
-    public function __construct()
-    {
-        $this->guard = "api"; // add
-    }
-
+ 
     public function rules()
     {
 
@@ -36,10 +31,9 @@ class LoginController extends Controller
             'FullName' => 'required',
             'LastNames' => 'required',
             'NumberId' => 'required|unique:users',
-            'password' => 'required',
-            'confir' => 'required',
+            'password' => 'required|min:4',
+            'password_confirmation' => 'required|min:4',
             'email' => 'required|unique:users',
-            'User' => 'required',
             'typeUser' => 'required',
             'typeNumberId' => 'required',
         ];
@@ -53,23 +47,22 @@ class LoginController extends Controller
             'FullName.required' => 'campo requerido',
             'LastNames.required' => 'campo requerido ',
             'NumberId.required' => 'campo requerido',
-            'NumberId.unique:users' => 'Cedula Repetida',
+            'NumberId.unique' => 'Cedula Repetida',
             'password.required' => 'campo requerido ',
             'email.required' => 'campo requerido',
-            'email.unique:users' => 'Email Repetida',
+            'email.unique' => 'Email Repetida',
             'typeUser.required' => 'campo requerido ',
             'typeNumberId.required' => 'campo requerido ',
+            'password_confirmation.required' => 'Debe confirmar su contrasena ',
         ];
         return $messages;
     }
 
     public function login(Request $request)
     {
-        Log::info(gettype( json_decode($request)));
         try {
             $user = User::where('email', $request->email)->first();
             if ($user != null) {
-                // Log::info(auth( $this->guard )->login( $user ) );
                 if (decrypt($user->password)  === $request->password && $user->email === $request->email) {
                     $token = JWTAuth::fromUser($user);
                     $status = 'success';
@@ -86,7 +79,6 @@ class LoginController extends Controller
                     return $this->data;
                 }
             }
-            // return $this->data;
         } catch (\Throwable $th) {
             return $this->data;
         }
@@ -95,16 +87,14 @@ class LoginController extends Controller
     public function logout()
     {
         auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Sesion Finalizada']);
     }
     public function registre(Request $request)
     {
-        Log::info($request);
         try {
             $validator = Validator::make($request->all(), $this->rules(), $this->messages());
             if ($validator->fails()) {
-                return response()->json($validator->messages(), 400);
+                return response()->json($validator->errors()->all(), 400);
             }
             $user = DB::transaction(function () use ($request) {
                 $user = User::create([
@@ -113,8 +103,8 @@ class LoginController extends Controller
                     'NumberId' => $request->NumberId,
                     'password' => encrypt($request->password),
                     'email' => $request->email,
-                    'User' => $request->User,
                     'typeUser' => $request->typeUser,
+                    'typeNumberId' => $request->typeUser,
                 ]);
 
                 $code = 200;

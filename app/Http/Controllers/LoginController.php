@@ -60,10 +60,10 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        try {
-            $user = User::where('email', $request->email)->first();
+        try {       
+            $user = User::where('email', strtolower($request->email))->first();
             if ($user != null) {
-                if (decrypt($user->password)  === $request->password && $user->email === $request->email) {
+                if (decrypt($user->password)  === $request->password && $user->email === strtolower($request->email)) {
                     $token = JWTAuth::fromUser($user);
                     $status = 'success';
                     $code = 200;
@@ -97,14 +97,14 @@ class LoginController extends Controller
             $validator = Validator::make($request->all(), $this->rules(), $this->messages());
             if ($validator->fails()) {
                 return response()->json($validator->errors()->all(), 400);
-            }
+            }      
             $user = DB::transaction(function () use ($request) {
                 $user = User::create([
                     'FullName' => $request->FullName,
                     'LastNames' => $request->LastNames,
                     'NumberId' => $request->NumberId,
                     'password' => encrypt($request->password),
-                    'email' => $request->email,
+                    'email' => strtolower($request->email),
                     'typeUser' => $request->typeUser,
                     'typeNumberId' => $request->typeUser,
                 ]);

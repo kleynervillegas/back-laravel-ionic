@@ -79,6 +79,8 @@ class LoginController extends Controller
                     return $this->data;
                 }
             }
+            $this->data['message'] = "Usuario No Encontrado";
+            return $this->data;
         } catch (\Throwable $th) {
             return $this->data;
         }

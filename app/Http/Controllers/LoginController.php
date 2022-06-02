@@ -23,7 +23,7 @@ class LoginController extends Controller
         'code' => 400,
         'message' => 'A ocurrido un Error',
     ];
- 
+
     public function rules()
     {
 
@@ -60,7 +60,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        try {       
+        try {
             $user = User::where('email', strtolower($request->email))->first();
             if ($user != null) {
                 if (decrypt($user->password)  === $request->password && $user->email === strtolower($request->email)) {
@@ -89,8 +89,17 @@ class LoginController extends Controller
 
     public function logout()
     {
-        auth()->logout();
-        return response()->json(['message' => 'Sesion Finalizada']);
+        try {
+            auth()->logout();
+            $status = 'success';
+            $code = 200;
+            $this->data['status'] = $status;
+            $this->data['code'] = $code;
+            $this->data['message'] = "Sesion Finalizada";
+            return $this->data;
+        } catch (\Throwable $th) {
+            return $this->data;
+        }
     }
     public function registre(Request $request)
     {
@@ -98,7 +107,7 @@ class LoginController extends Controller
             $validator = Validator::make($request->all(), $this->rules(), $this->messages());
             if ($validator->fails()) {
                 return response()->json($validator->errors()->all(), 400);
-            }      
+            }
             $user = DB::transaction(function () use ($request) {
                 $user = User::create([
                     'FullName' => $request->FullName,
@@ -123,7 +132,7 @@ class LoginController extends Controller
             return $this->data;
         }
     }
-     public function me()
+    public function me()
     {
         return response()->json(auth()->user());
     }

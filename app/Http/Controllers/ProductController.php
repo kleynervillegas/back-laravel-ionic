@@ -40,8 +40,13 @@ class ProductController extends Controller
 
   public function get_image($imgen)
   {
-    $file = Storage::disk('image')->get($imgen);
-    return $file;
+
+    try {
+      $file = Storage::disk('image')->get($imgen);
+      return $file;
+    } catch (\Exception $exception) {
+      return $this->data;
+    }
   }
 
   public function index()
@@ -113,15 +118,20 @@ class ProductController extends Controller
 
   public function getDetailsProduct($id)
   {
-    $product = Product::where('id', $id)->first();
-    $imgen =  json_decode($product->image);
-    $product['image'] = $imgen;
-    $code = 200;
-    $status = 'success';
-    $this->data['status'] = $status;
-    $this->data['data'] = $product;
-    $this->data['code'] = $code;
-    $this->data['message'] = "Producto encontrado correctamente";
-    return $this->data;
+    try {
+
+      $product = Product::where('id', $id)->first();
+      $imgen =  json_decode($product->image);
+      $product['image'] = $imgen;
+      $code = 200;
+      $status = 'success';
+      $this->data['status'] = $status;
+      $this->data['data'] = $product;
+      $this->data['code'] = $code;
+      $this->data['message'] = "Producto encontrado correctamente";
+      return $this->data;
+    } catch (\Exception $exception) {
+      return $this->data;
+    }
   }
 }

@@ -72,6 +72,7 @@ class LoginController extends Controller
                     $this->data['token'] = $token;
                     $this->data['tokenType'] = "bearer";
                     $this->data['expiresIn'] = auth()->factory()->getTTL() * 60;
+                    $this->data['email'] = strtolower($request->email);
                     $this->data['message'] = "Autenticacion Correcta";
                     return $this->data;
                 } else {

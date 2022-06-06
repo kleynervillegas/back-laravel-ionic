@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\CarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::group([
     Route::post('logout', [\App\Http\Controllers\LoginController::class, 'logout']);
     Route::post('refresh', [\App\Http\Controllers\LoginController::class, 'refresh']);
     Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);
+    Route::resource('/products/car', \App\Http\Controllers\CarController::class);
 });
 Route::get('/products/get_image/{image}', [\App\Http\Controllers\ProductController::class, 'get_image'])->name('get_image');
 Route::get('/products/detailsproduct/{id}', [\App\Http\Controllers\ProductController::class, 'getDetailsProduct']);

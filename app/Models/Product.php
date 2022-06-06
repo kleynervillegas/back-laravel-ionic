@@ -21,5 +21,6 @@ class Product extends Model
         'stopMin',
         'stopMax',
         'image',
+        'id_user',
     ];
 }

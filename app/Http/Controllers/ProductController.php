@@ -99,7 +99,9 @@ class ProductController extends Controller
           'price' => $request->price,
           'stopMin' => $request->stopMin,
           'stopMax' => $request->stopMax,
-          'image' => json_encode($this->imegenArray)
+          'image' => json_encode($this->imegenArray),
+          'id_user' => auth()->user()->id,
+
         ]);
         $code = 200;
         $status = 'success';
@@ -133,5 +135,10 @@ class ProductController extends Controller
     } catch (\Exception $exception) {
       return $this->data;
     }
+  }
+
+  public function createNotification()
+  {
+
   }
 }

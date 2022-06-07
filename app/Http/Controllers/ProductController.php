@@ -10,8 +10,7 @@ use Dflydev\DotAccessData\Data;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use Illuminate\Http\Response;
-
-
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -27,8 +26,8 @@ class ProductController extends Controller
   public function rules()
   {
     $rules = [
-      'name' => 'required|max:100',
-      'description' => 'required|max:500',
+      'name' => 'required|max:50',
+      'description' => 'required|max:900',
       'coin' => 'required|max:1',
       'price' => 'required|numeric',
       'stopMin' => 'required|numeric',
@@ -37,6 +36,21 @@ class ProductController extends Controller
     ];
     return $rules;
   }
+  public function messages()
+    {
+        $messages = [
+            'name.required' => 'Campo nombre es requerido',
+            'name.max:50' => 'Campo nombre deber ser minimo 50',
+            'description.required' => 'Campo descripcion es requerido ',
+            'description.max:900' => 'Campo descripcion deber ser minimo 900',
+            'coin.required' => 'Campo moneda es requerido',
+            'price.required' => 'Campo precio es requerido',
+            'stopMin.required' => 'Campo stopMin requerido ',
+            'stopMax.required' => 'Campo stopMax requerido',
+            'image.required' => 'Campo image requerido ',
+        ];
+        return $messages;
+    }
 
   public function get_image($imgen)
   {
@@ -67,7 +81,10 @@ class ProductController extends Controller
   public function store(Request $request)
   {
     try {
-      $validated = $request->validate($this->rules());
+      $validator = Validator::make($request->all(), $this->rules(), $this->messages());
+      if ($validator->fails()) {
+          return response()->json($validator->errors()->all(), 400);
+      }
       $products = DB::transaction(function () use ($request) {
         foreach ($request->image as $file) {
           $file = $file;

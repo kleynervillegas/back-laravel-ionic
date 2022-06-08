@@ -27,6 +27,7 @@ Route::group([
     Route::post('logout', [\App\Http\Controllers\LoginController::class, 'logout']);
     Route::post('refresh', [\App\Http\Controllers\LoginController::class, 'refresh']);
     Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);
+    Route::get('/notific', [\App\Http\Controllers\ProductController::class, 'createNotification'])->name('notific');
     Route::resource('/products/car', \App\Http\Controllers\CarController::class);
 });
 Route::get('/products/get_image/{image}', [\App\Http\Controllers\ProductController::class, 'get_image'])->name('get_image');

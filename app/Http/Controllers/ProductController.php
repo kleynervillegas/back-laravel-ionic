@@ -154,8 +154,8 @@ class ProductController extends Controller
     }
   }
 
-  public function createNotification()
+  public function createNotification(Request $request)
   {
-
+    return $request;
   }
 }

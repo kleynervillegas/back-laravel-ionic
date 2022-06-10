@@ -14,8 +14,6 @@ class Cars extends Model
     protected $fillable = [
         'id_product',
         'id_user',
-        'descrption',
-        'send_user',
-        'origin',     
+        'count',           
     ];
 }

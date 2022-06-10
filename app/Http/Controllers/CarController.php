@@ -9,9 +9,25 @@ use DB;
 
 class CarController extends Controller
 {
-    public function add_card($id){
+    //body of request response 
+    public $data;
 
-        Log::info($id);
-
+    public function __construct()
+    {
+        $this->data = config('variablesGobla.data');
+    }
+    public function add_card($id)
+    {
+        try {
+                $code = 200;
+                $status = 'success';
+                $this->data['status'] = $status;
+                // $this->data['data'] = $user;
+                $this->data['code'] = $code;
+                $this->data['message'] = "Producto Agregado al carrito Satisfactoriomente";
+                return $this->data;
+        } catch (\Throwable $th) {
+            return $this->data;
+        }
     }
 }

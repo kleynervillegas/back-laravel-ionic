@@ -17,12 +17,12 @@ use App\Models\User;
 class LoginController extends Controller
 {
     //body of request response 
-    public $data = [
-        'status' => 'Error',
-        'data' => array(),
-        'code' => 400,
-        'message' => 'A ocurrido un Error',
-    ];
+    public $data;
+
+    public function __construct()
+    {
+        $this->data = config('variablesGobla.data');
+    }
 
     public function rules()
     {

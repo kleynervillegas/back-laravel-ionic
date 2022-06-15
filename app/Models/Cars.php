@@ -12,8 +12,8 @@ class Cars extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'count',           
         'id_product',
         'id_user',
-        'count',           
     ];
 }

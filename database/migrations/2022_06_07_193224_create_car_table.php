@@ -13,9 +13,16 @@ class CreateCarTable extends Migration
      */
     public function up()
     {
-        Schema::create('car', function (Blueprint $table) {
+        Schema::create('cars', function (Blueprint $table) {
             $table->id();
+            $table->integer('count');
+            $table->foreignId('id_product')->unsigned();
+            $table->foreignId('id_user')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
+            //-Constraints
+            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_product')->references('id')->on('products');
         });
     }
 
@@ -26,6 +33,6 @@ class CreateCarTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('car');
+        Schema::dropIfExists('cars');
     }
 }

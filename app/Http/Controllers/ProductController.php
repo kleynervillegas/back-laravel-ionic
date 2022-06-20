@@ -152,10 +152,5 @@ class ProductController extends Controller
     } catch (\Exception $exception) {
       return $this->data;
     }
-  }
-
-  public function createNotification(Request $request)
-  {
-    return $request;
-  }
+  }  
 }

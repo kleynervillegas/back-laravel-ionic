@@ -1,0 +1,15 @@
+[2022-06-20 20:41:32] local.ERROR: Command "optimiz" is ambiguous.
+Did you mean one of these?
+    optimize       Cache the framework bootstrap files
+    optimize:clear Remove the cached bootstrap files. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"optimiz\" is ambiguous.
+Did you mean one of these?
+    optimize       Cache the framework bootstrap files
+    optimize:clear Remove the cached bootstrap files. at C:\\laragon\\www\\back-ionic\\back-ionic-laravel\\back-laravel-ionic\\vendor\\symfony\\console\\Application.php:750)
+[stacktrace]
+#0 C:\\laragon\\www\\back-ionic\\back-ionic-laravel\\back-laravel-ionic\\vendor\\symfony\\console\\Application.php(259): Symfony\\Component\\Console\\Application->find('optimiz')
+#1 C:\\laragon\\www\\back-ionic\\back-ionic-laravel\\back-laravel-ionic\\vendor\\symfony\\console\\Application.php(171): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\laragon\\www\\back-ionic\\back-ionic-laravel\\back-laravel-ionic\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(94): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\laragon\\www\\back-ionic\\back-ionic-laravel\\back-laravel-ionic\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(129): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\laragon\\www\\back-ionic\\back-ionic-laravel\\back-laravel-ionic\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 

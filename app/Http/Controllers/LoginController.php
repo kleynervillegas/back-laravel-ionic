@@ -12,10 +12,11 @@ use JWTAuth;
 use Log;
 use DB;
 use App\Models\User;
-
+use App\traits\NotificationsTrait;
 
 class LoginController extends Controller
 {
+    use NotificationsTrait;
     //body of request response 
     public $data;
 
@@ -72,7 +73,7 @@ class LoginController extends Controller
                     $this->data['token'] = $token;
                     $this->data['tokenType'] = "bearer";
                     $this->data['expiresIn'] = auth()->factory()->getTTL() * 60;
-                    $this->data['email'] = strtolower($request->email);
+                    $this->data['data'] = $user;
                     $this->data['message'] = "Autenticacion Correcta";
                     return $this->data;
                 } else {
@@ -103,6 +104,17 @@ class LoginController extends Controller
     }
     public function registre(Request $request)
     {
+        $user = User::create([
+            'FullName' => $request->FullName,
+            'LastNames' => $request->LastNames,
+            'NumberId' => $request->NumberId,
+            'password' => encrypt($request->password),
+            'email' => strtolower($request->email),
+            'typeUser' => $request->typeUser,
+            'typeNumberId' => $request->typeUser,
+        ]);
+        $this->createNotification(null,null,null,'Bienvenido verifica tu cuenta para que puedas comezar con tus compras','regitro de user');
+
         try {
             $validator = Validator::make($request->all(), $this->rules(), $this->messages());
             if ($validator->fails()) {
@@ -118,7 +130,7 @@ class LoginController extends Controller
                     'typeUser' => $request->typeUser,
                     'typeNumberId' => $request->typeUser,
                 ]);
-
+                $this->createNotification(null,null,null,'Bienvenido verifica tu cuenta para que puedas comezar con tus compras','regitro de user');
                 $code = 200;
                 $status = 'success';
                 $this->data['status'] = $status;

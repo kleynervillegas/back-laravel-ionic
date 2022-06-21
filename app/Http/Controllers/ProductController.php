@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use DB;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
+use App\traits\NotificationsTrait;
 
 class ProductController extends Controller
 {
+
+  use NotificationsTrait;
   //body of request response 
   public $data;
   public $imegenArray = [];
@@ -80,6 +83,7 @@ class ProductController extends Controller
   }
   public function store(Request $request)
   {
+    
     try {
       $validator = Validator::make($request->all(), $this->rules(), $this->messages());
       if ($validator->fails()) {
@@ -120,9 +124,11 @@ class ProductController extends Controller
           'id_user' => auth()->user()->id,
 
         ]);
+        $this->createNotification($products,auth()->user()->id,auth()->user()->id,'Ha registrado el siguiente producto','registro de producto');
         $code = 200;
         $status = 'success';
         $this->data['status'] = $status;
+        $this->data['nofity'] = true;
         $this->data['data'] = $products;
         $this->data['code'] = $code;
         $this->data['message'] = "Producto Registrado Satisfactoriamente";

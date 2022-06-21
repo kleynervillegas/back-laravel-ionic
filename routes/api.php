@@ -29,6 +29,7 @@ Route::group([
     Route::post('refresh', [\App\Http\Controllers\LoginController::class, 'refresh']);
     Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);
     Route::get('/notify', [\App\Http\Controllers\NotifyController::class, 'createNotification']);
+    Route::get('/notify/getNotifyUser/{id}', [\App\Http\Controllers\NotifyController::class, 'getNotifyUser']);
     Route::get('/car/{id}', [\App\Http\Controllers\CarController::class,'add_card'])->name('add_card');
 });
 Route::get('/products/get_image/{image}', [\App\Http\Controllers\ProductController::class, 'get_image'])->name('get_image');

@@ -104,17 +104,6 @@ class LoginController extends Controller
     }
     public function registre(Request $request)
     {
-        $user = User::create([
-            'FullName' => $request->FullName,
-            'LastNames' => $request->LastNames,
-            'NumberId' => $request->NumberId,
-            'password' => encrypt($request->password),
-            'email' => strtolower($request->email),
-            'typeUser' => $request->typeUser,
-            'typeNumberId' => $request->typeUser,
-        ]);
-        $this->createNotification(null,null,null,'Bienvenido verifica tu cuenta para que puedas comezar con tus compras','regitro de user');
-
         try {
             $validator = Validator::make($request->all(), $this->rules(), $this->messages());
             if ($validator->fails()) {
@@ -130,7 +119,7 @@ class LoginController extends Controller
                     'typeUser' => $request->typeUser,
                     'typeNumberId' => $request->typeUser,
                 ]);
-                $this->createNotification(null,null,null,'Bienvenido verifica tu cuenta para que puedas comezar con tus compras','regitro de user');
+                $this->createNotification(0,0,0,'Bienvenido verifica tu cuenta para que puedas comezar con tus compras','regitro de user');
                 $code = 200;
                 $status = 'success';
                 $this->data['status'] = $status;

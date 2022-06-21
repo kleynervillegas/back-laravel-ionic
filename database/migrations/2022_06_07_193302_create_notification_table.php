@@ -18,9 +18,9 @@ class CreateNotificationTable extends Migration
             $table->string('description',1000);
             $table->string('origin',1000);
             $table->boolean('send_user',1000);
-            $table->foreignId('id_product')->unsigned()->default(NULL);	
-            $table->foreignId('id_user')->unsigned()->default(NULL);	
-            $table->foreignId('id_user_origin')->unsigned()->default(NULL);	
+            $table->foreignId('id_product')->unsigned()->default(0);	
+            $table->foreignId('id_user')->unsigned()->default(0);	
+            $table->foreignId('id_user_origin')->unsigned()->default(0);	
             $table->timestamps();
             $table->softDeletes(); 
             //-Constraints

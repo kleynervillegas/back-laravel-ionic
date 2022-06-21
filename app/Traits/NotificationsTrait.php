@@ -13,15 +13,15 @@ trait NotificationsTrait
     /**
     Función para crear las notificaciones
      */ 
-    public function createNotification($product=null,$id_user=null,$id_user_origin=null,$description,$origin)
+    public function createNotification($product,$id_user,$id_user_origin,$description,$origin)
     {    
         
         $nofity = DB::transaction(function () use ($product,$id_user,$id_user_origin,$description,$origin) {               
             $nofity = Notification::create([
-                'id_product' =>$product=null? 0 :$product->id,
+                'id_product' =>$product=0? 0 :$product->id,
                 'id_user' => $id_user,
                 'id_user_origin' =>$id_user_origin,
-                'description' =>$product=null? $description :$description.' '.$product->name,
+                'description' =>$product=0? $description :$description.' '.$product->name,
                 'send_user' =>0,
                 'origin' => $origin,    
               ]); 

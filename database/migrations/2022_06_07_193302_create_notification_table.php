@@ -21,7 +21,8 @@ class CreateNotificationTable extends Migration
             $table->foreignId('id_product')->unsigned()->nullable();	
             $table->foreignId('id_user')->unsigned()->nullable();	
             $table->foreignId('id_user_origin')->unsigned()->nullable();	
-            $table->boolean('first_notify')->nullable();	
+            $table->boolean('first_notify')->nullable();
+            $table->boolean('view_notify')->nullable();	
             $table->timestamps();
             $table->softDeletes(); 
             //-Constraints

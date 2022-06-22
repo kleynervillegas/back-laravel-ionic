@@ -18,6 +18,7 @@ class Notification extends Model
         'description',
         'send_user',
         'origin',  
-        'first_notify',    
+        'first_notify',  
+        'view_notify',
     ];
 }

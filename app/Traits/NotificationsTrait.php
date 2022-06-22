@@ -24,7 +24,7 @@ trait NotificationsTrait
                 'send_user' =>false,
                 'origin' => $origin,    
                 'first_notify' => $first_notify,
-
+                'view_notify' => false,
               ]); 
             return $nofity;
         });

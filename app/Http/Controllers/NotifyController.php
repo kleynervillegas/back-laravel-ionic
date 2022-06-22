@@ -17,11 +17,16 @@ class NotifyController extends Controller
 
 
     public function getNotifyUser($id){
+        
           try {
             $first_notify= Notification::where('first_notify',true);
+            $view_notify= Notification::where('id_user_origin',$id)
+            ->where('view_notify',false);
             $notification=  Notification::where('id_user_origin',$id)
             ->where('send_user',0)
-            ->union($first_notify)->get();
+            ->union($first_notify)
+            ->union($view_notify)
+            ->get();
             if($first_notify!=null){$first_notify->update(['first_notify' =>false]);}          
                 $code = 200;
                 $status = 'success';

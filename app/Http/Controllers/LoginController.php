@@ -119,7 +119,7 @@ class LoginController extends Controller
                     'typeUser' => $request->typeUser,
                     'typeNumberId' => $request->typeUser,
                 ]);
-                $this->createNotification(0,0,0,'Bienvenido verifica tu cuenta para que puedas comezar con tus compras','regitro de user');
+                $this->createNotification(true,0,0,0,'Bienvenido verifica tu cuenta para que puedas comezar con tus compras','regitro de user',true);
                 $code = 200;
                 $status = 'success';
                 $this->data['status'] = $status;

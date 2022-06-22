@@ -124,7 +124,7 @@ class ProductController extends Controller
           'id_user' => auth()->user()->id,
 
         ]);
-        $this->createNotification($products,auth()->user()->id,auth()->user()->id,'Ha registrado el siguiente producto','registro de producto');
+        $this->createNotification(false,$products,auth()->user()->id,auth()->user()->id,'Ha registrado el siguiente producto','registro de producto');
         $code = 200;
         $status = 'success';
         $this->data['status'] = $status;

@@ -17,10 +17,11 @@ class CreateNotificationTable extends Migration
             $table->id();
             $table->string('description',1000);
             $table->string('origin',1000);
-            $table->boolean('send_user',1000);
-            $table->foreignId('id_product')->unsigned()->default(0);	
-            $table->foreignId('id_user')->unsigned()->default(0);	
-            $table->foreignId('id_user_origin')->unsigned()->default(0);	
+            $table->boolean('send_user');
+            $table->foreignId('id_product')->unsigned()->nullable();	
+            $table->foreignId('id_user')->unsigned()->nullable();	
+            $table->foreignId('id_user_origin')->unsigned()->nullable();	
+            $table->boolean('first_notify')->nullable();	
             $table->timestamps();
             $table->softDeletes(); 
             //-Constraints

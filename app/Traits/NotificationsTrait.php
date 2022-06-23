@@ -14,7 +14,7 @@ trait NotificationsTrait
     Función para crear las notificaciones
      */ 
     public function createNotification($active=false,$product,$id_user,$id_user_origin,$description,$origin,$first_notify=null)
-    {    
+    {  
         $nofity = DB::transaction(function () use ($active,$product,$id_user,$id_user_origin,$description,$origin,$first_notify) {               
             $nofity = Notification::create([
                 'id_product' =>($active)? null :$product->id,

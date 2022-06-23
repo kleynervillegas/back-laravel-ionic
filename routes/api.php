@@ -25,6 +25,7 @@ Route::group([
 ], function ($router) {
 
     Route::resource('/products', \App\Http\Controllers\ProductController::class);
+    Route::post('/products/edit', [\App\Http\Controllers\ProductController::class,'edit'])->name('edit');
     Route::post('logout', [\App\Http\Controllers\LoginController::class, 'logout']);
     Route::post('refresh', [\App\Http\Controllers\LoginController::class, 'refresh']);
     Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);

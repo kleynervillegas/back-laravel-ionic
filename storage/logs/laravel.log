@@ -1,0 +1,68 @@
+[2022-06-23 20:21:44] local.INFO: array (
+  '_id' => 2,
+  'name' => 'nueva notificaciones',
+  'description' => 'ttrtreter',
+  'coin' => '0',
+  'price' => 4554.54,
+  'stopMin' => 45,
+  'stopMax' => 45,
+  'image' => 
+  array (
+    0 => '62b345f41c5b1.jpeg',
+    1 => '62b345f41ca47.jpeg',
+  ),
+)  
+[2022-06-23 20:22:18] local.INFO: array (
+  '_id' => 2,
+  'name' => 'nueva notificaciones',
+  'description' => 'ttrtreter',
+  'coin' => '0',
+  'price' => 4554.54,
+  'stopMin' => 45,
+  'stopMax' => 45,
+  'image' => 
+  array (
+    0 => '62b345f41c5b1.jpeg',
+    1 => '62b345f41ca47.jpeg',
+  ),
+)  
+[2022-06-23 20:24:14] local.INFO: array (
+  'id' => 2,
+  'name' => 'nueva notificaciones',
+  'description' => 'ttrtreter',
+  'coin' => '0',
+  'price' => 4554.54,
+  'stopMin' => 45,
+  'stopMax' => 45,
+  'image' => 
+  array (
+    0 => '62b345f41c5b1.jpeg',
+    1 => '62b345f41ca47.jpeg',
+  ),
+)  
+[2022-06-23 20:25:57] local.INFO: array (
+  'id' => 2,
+  'name' => 'nueva notificaciones',
+  'description' => 'ttrtreter',
+  'coin' => '0',
+  'price' => 4554.54,
+  'stopMin' => 45,
+  'stopMax' => 45,
+  'image' => 
+  array (
+  ),
+)  
+[2022-06-23 20:28:14] local.INFO: array (
+  'id' => 2,
+  'name' => 'nueva notificaciones',
+  'description' => 'ttrtreter',
+  'coin' => '0',
+  'price' => 4554.54,
+  'stopMin' => 45,
+  'stopMax' => 45,
+  'image' => 
+  array (
+    0 => '62b345f41c5b1.jpeg',
+    1 => '62b345f41ca47.jpeg',
+  ),
+)  

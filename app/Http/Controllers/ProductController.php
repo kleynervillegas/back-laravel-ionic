@@ -22,9 +22,9 @@ class ProductController extends Controller
   public $imegenArray = [];
 
   public function __construct()
-    {
-        $this->data = config('variablesGobla.data');
-    }
+  {
+    $this->data = config('variablesGobla.data');
+  }
 
   public function rules()
   {
@@ -40,20 +40,20 @@ class ProductController extends Controller
     return $rules;
   }
   public function messages()
-    {
-        $messages = [
-            'name.required' => 'Campo nombre es requerido',
-            'name.max:50' => 'Campo nombre deber ser minimo 50',
-            'description.required' => 'Campo descripcion es requerido ',
-            'description.max:900' => 'Campo descripcion deber ser minimo 900',
-            'coin.required' => 'Campo moneda es requerido',
-            'price.required' => 'Campo precio es requerido',
-            'stopMin.required' => 'Campo stopMin requerido ',
-            'stopMax.required' => 'Campo stopMax requerido',
-            'image.required' => 'Campo image requerido ',
-        ];
-        return $messages;
-    }
+  {
+    $messages = [
+      'name.required' => 'Campo nombre es requerido',
+      'name.max:50' => 'Campo nombre deber ser minimo 50',
+      'description.required' => 'Campo descripcion es requerido ',
+      'description.max:900' => 'Campo descripcion deber ser minimo 900',
+      'coin.required' => 'Campo moneda es requerido',
+      'price.required' => 'Campo precio es requerido',
+      'stopMin.required' => 'Campo stopMin requerido ',
+      'stopMax.required' => 'Campo stopMax requerido',
+      'image.required' => 'Campo image requerido ',
+    ];
+    return $messages;
+  }
 
   public function get_image($imgen)
   {
@@ -83,11 +83,10 @@ class ProductController extends Controller
   }
   public function store(Request $request)
   {
-    
     try {
       $validator = Validator::make($request->all(), $this->rules(), $this->messages());
       if ($validator->fails()) {
-          return response()->json($validator->errors()->all(), 400);
+        return response()->json($validator->errors()->all(), 400);
       }
       $products = DB::transaction(function () use ($request) {
         foreach ($request->image as $file) {
@@ -124,7 +123,7 @@ class ProductController extends Controller
           'id_user' => auth()->user()->id,
 
         ]);
-        $this->createNotification(false,$products,auth()->user()->id,auth()->user()->id,'Ha registrado el siguiente producto','registro de producto');
+        $this->createNotification(false, $products, auth()->user()->id, auth()->user()->id, 'Ha registrado el siguiente producto', 'registro de producto');
         $code = 200;
         $status = 'success';
         $this->data['status'] = $status;
@@ -144,7 +143,6 @@ class ProductController extends Controller
   public function getDetailsProduct($id)
   {
     try {
-
       $product = Product::where('id', $id)->first();
       $imgen =  json_decode($product->image);
       $product['image'] = $imgen;
@@ -158,5 +156,48 @@ class ProductController extends Controller
     } catch (\Exception $exception) {
       return $this->data;
     }
-  }  
+  }
+
+  public function destroy($id)
+  {
+    try {
+      $products = DB::transaction(function () use ($id) {
+        $products = Product::where('id', $id)->first();
+        $this->createNotification(false, $products, auth()->user()->id, auth()->user()->id, 'Ha borrado el siguiente producto', 'borrado producto');
+        $products = Product::where('id', $id)->delete();
+        $code = 200;
+        $status = 'success';
+        $this->data['status'] = $status;
+        $this->data['code'] = $code;
+        $this->data['message'] = "Producto borrado correctamente";
+        return $this->data;
+      });
+      return response()->json($this->data);
+    } catch (\Exception $exception) {
+      return $this->data;
+    }
+  }
+
+  public function edit(Request $request){
+    try {
+
+      log::info($request);
+      $products = DB::transaction(function () use ($request) {
+        $products = Product::where('id', $request->id)->first();
+        // $this->createNotification(false, $products, auth()->user()->id, auth()->user()->id, 'Ha borrado el siguiente producto', 'borrado producto');
+        // $products = Product::where('id', $id)->delete();
+        $code = 200;
+        $status = 'success';
+        $this->data['status'] = $status;
+        $this->data['code'] = $code;
+        $this->data['data'] = $products;
+        $this->data['message'] = "Producto editado correctamente";
+        return $this->data;
+      });
+      return response()->json($this->data);
+    } catch (\Exception $exception) {
+      return $this->data;
+    }
+
+  }
 }

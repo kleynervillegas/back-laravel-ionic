@@ -16,4 +16,10 @@ class Cars extends Model
         'id_product',
         'id_user',
     ];
+
+
+    public function getProduct()
+    {
+        return $this->hasOne(Product::class, 'id', 'id_product');
+    }
 }

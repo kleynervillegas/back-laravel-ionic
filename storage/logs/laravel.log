@@ -1,68 +1,24 @@
-[2022-06-23 20:21:44] local.INFO: array (
-  '_id' => 2,
-  'name' => 'nueva notificaciones',
-  'description' => 'ttrtreter',
-  'coin' => '0',
-  'price' => 4554.54,
-  'stopMin' => 45,
-  'stopMax' => 45,
-  'image' => 
-  array (
-    0 => '62b345f41c5b1.jpeg',
-    1 => '62b345f41ca47.jpeg',
-  ),
+[2022-06-27 18:26:21] local.INFO: array (
+  0 => '62b9aa2c30c71.jpeg',
+  1 => '62b9aa2c30def.jpeg',
+  2 => '62b9aa2c30ee6.jpeg',
+  3 => '62b9aa2c30fe7.jpeg',
 )  
-[2022-06-23 20:22:18] local.INFO: array (
-  '_id' => 2,
-  'name' => 'nueva notificaciones',
-  'description' => 'ttrtreter',
-  'coin' => '0',
-  'price' => 4554.54,
-  'stopMin' => 45,
-  'stopMax' => 45,
-  'image' => 
-  array (
-    0 => '62b345f41c5b1.jpeg',
-    1 => '62b345f41ca47.jpeg',
-  ),
+[2022-06-27 18:26:21] local.INFO: array (
+  0 => '62b345f41c5b1.jpeg',
+  1 => '62b345f41ca47.jpeg',
 )  
-[2022-06-23 20:24:14] local.INFO: array (
-  'id' => 2,
-  'name' => 'nueva notificaciones',
-  'description' => 'ttrtreter',
-  'coin' => '0',
-  'price' => 4554.54,
-  'stopMin' => 45,
-  'stopMax' => 45,
-  'image' => 
-  array (
-    0 => '62b345f41c5b1.jpeg',
-    1 => '62b345f41ca47.jpeg',
-  ),
+[2022-06-27 18:26:21] local.INFO: array (
+  0 => '62b336228906c.jpeg',
+  1 => '62b3362289217.jpeg',
 )  
-[2022-06-23 20:25:57] local.INFO: array (
-  'id' => 2,
-  'name' => 'nueva notificaciones',
-  'description' => 'ttrtreter',
-  'coin' => '0',
-  'price' => 4554.54,
-  'stopMin' => 45,
-  'stopMax' => 45,
-  'image' => 
-  array (
-  ),
+[2022-06-27 18:26:21] local.INFO: array (
+  0 => '62b9aa2c30c71.jpeg',
+  1 => '62b9aa2c30def.jpeg',
+  2 => '62b9aa2c30ee6.jpeg',
+  3 => '62b9aa2c30fe7.jpeg',
 )  
-[2022-06-23 20:28:14] local.INFO: array (
-  'id' => 2,
-  'name' => 'nueva notificaciones',
-  'description' => 'ttrtreter',
-  'coin' => '0',
-  'price' => 4554.54,
-  'stopMin' => 45,
-  'stopMax' => 45,
-  'image' => 
-  array (
-    0 => '62b345f41c5b1.jpeg',
-    1 => '62b345f41ca47.jpeg',
-  ),
+[2022-06-27 18:26:21] local.INFO: array (
+  0 => '62b49c70b3d8f.jpeg',
+  1 => '62b49c70b3f93.png',
 )  

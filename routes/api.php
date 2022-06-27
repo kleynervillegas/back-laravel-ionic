@@ -31,7 +31,8 @@ Route::group([
     Route::post('me', [\App\Http\Controllers\LoginController::class, 'me']);
     Route::get('/notify', [\App\Http\Controllers\NotifyController::class, 'createNotification']);
     Route::get('/notify/getNotifyUser/{id}', [\App\Http\Controllers\NotifyController::class, 'getNotifyUser']);
-    Route::get('/car/{id}', [\App\Http\Controllers\CarController::class,'add_card'])->name('add_card');
+    Route::post('/car', [\App\Http\Controllers\CarController::class,'add_card'])->name('add_card');
+    Route::get('/car/getCarUser', [\App\Http\Controllers\CarController::class,'getCarUser'])->name('getCarUser');
 });
 Route::get('/products/get_image/{image}', [\App\Http\Controllers\ProductController::class, 'get_image'])->name('get_image');
 Route::get('/products/detailsproduct/{id}', [\App\Http\Controllers\ProductController::class, 'getDetailsProduct']);
